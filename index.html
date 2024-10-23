@@ -34,7 +34,7 @@
         }
         .chat-body {
             padding: 10px;
-            height: calc(100vh - 150px);
+            height: calc(100vh - 200px);
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -45,15 +45,15 @@
             background-color: #e6e6e6;
             padding: 10px;
             max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
             word-wrap: break-word;
+            margin-left: 0; /* Align messages to the left */
+            text-align: left;
         }
         .chat-message img {
             width: 100%;
             height: auto;
             border-radius: 5px;
-            max-width: 150px; /* Adjust the screenshot size */
+            max-width: 100px; /* Make the screenshot smaller */
         }
         .chat-message span {
             display: block;
@@ -72,7 +72,7 @@
             max-width: 500px;
             box-sizing: border-box;
         }
-        .manual-chat input {
+        .manual-chat input[type="text"] {
             flex: 1;
             padding: 10px;
             border: 1px solid #ddd;
@@ -88,6 +88,17 @@
             cursor: pointer;
             font-size: 14px;
         }
+        .manual-chat input[type="file"] {
+            display: none;
+        }
+        .upload-label {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -99,6 +110,8 @@
     </div>
     <div class="manual-chat">
         <input type="text" id="userInput" placeholder="Enter your message...">
+        <input type="file" id="imageInput" accept="image/*">
+        <label for="imageInput" class="upload-label">Upload Image</label>
         <button onclick="sendManualMessage()">Send</button>
     </div>
 </div>
@@ -130,23 +143,32 @@
 
     function sendManualMessage() {
         const userInput = document.getElementById('userInput').value;
-        if (userInput) {
+        const imageInput = document.getElementById('imageInput').files[0];
+
+        if (userInput || imageInput) {
             const chatBody = document.getElementById('chatBody');
             const messageElement = document.createElement('div');
             messageElement.classList.add('chat-message');
-            messageElement.innerHTML = `<b>You</b>:<br><span>${userInput}</span>`;
 
+            let messageContent = `<b>You</b>:<br><span>${userInput}</span>`;
+            if (imageInput) {
+                const imageURL = URL.createObjectURL(imageInput);
+                messageContent += `<br><img src="${imageURL}" alt="Uploaded Image">`;
+            }
+
+            messageElement.innerHTML = messageContent;
             chatBody.appendChild(messageElement);
             document.getElementById('userInput').value = ''; // Clear input field
+            document.getElementById('imageInput').value = ''; // Clear file input
             chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
 
             // Reply with random response after 2 seconds
-            setTimeout(function() {
+            setTimeout(function () {
                 const reply = getRandomElement(replyMessages);
                 const replyElement = document.createElement('div');
                 replyElement.classList.add('chat-message');
                 replyElement.innerHTML = `<b>${getRandomElement(names)}</b>:<br><span>${reply}</span>`;
-                
+
                 chatBody.appendChild(replyElement);
                 chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
             }, 2000);
