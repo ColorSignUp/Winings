@@ -14,6 +14,7 @@
             flex-direction: column;
             justify-content: space-between;
             height: 100vh;
+            transition: background-color 0.3s ease;
         }
         .chat-container {
             width: 100%;
@@ -31,6 +32,15 @@
             padding: 15px;
             text-align: center;
             font-size: 20px;
+            position: relative;
+        }
+        .dark-mode-toggle {
+            position: absolute;
+            right: 10px;
+            top: 15px;
+            cursor: pointer;
+            color: white;
+            font-size: 14px;
         }
         .chat-body {
             padding: 10px;
@@ -46,14 +56,14 @@
             padding: 10px;
             max-width: 90%;
             word-wrap: break-word;
-            margin-left: 0; /* Align messages to the left */
+            margin-left: 0;
             text-align: left;
         }
         .chat-message img {
-            width: 100%;
+            width: 100px;
             height: auto;
             border-radius: 5px;
-            max-width: 100px; /* Make the screenshot smaller */
+            max-width: 100px;
         }
         .chat-message span {
             display: block;
@@ -99,12 +109,31 @@
             cursor: pointer;
             font-size: 14px;
         }
+        .dark-mode {
+            background-color: #2f2f2f;
+        }
+        .dark-mode .chat-message {
+            background-color: #444;
+            color: white;
+        }
+        .dark-mode .chat-header {
+            background-color: #333;
+        }
+        .dark-mode .upload-label,
+        .dark-mode button {
+            background-color: #333;
+        }
+        .dark-mode-toggle.dark-on {
+            color: yellow;
+        }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">Winning Proofs Chat</div>
+    <div class="chat-header">Winning Proofs Chat 
+        <span class="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode: Off</span>
+    </div>
     <div class="chat-body" id="chatBody">
         <!-- Random feedback will be displayed here -->
     </div>
@@ -117,11 +146,11 @@
 </div>
 
 <script>
-    const names = ["John", "Alice", "Michael", "Emma", "Chris", "Sophia", "Daniel", "Olivia"];
-    const messages = ["Yes, I won!", "Got my payout!", "Feeling lucky!", "Another win!", "Just received!", "Amazing win!"];
+    const names = ["Deepak Bhai", "Mohan Bhai", "Rohan", "Shaam", "Piyush Bro", "Sumit Bhai", "Raju Bhai", "Olivia"];
+    const messages = ["Yes, I won!", "thankyou bhai 🥺", "phir se win yaar, thankyou", "hack working hai guys", "Yessss, hack is working! wow", "Bhai socha nahi tha, itna earn krlunga 🥹, thankyou yaar , full support bro , thankyou EarningScripter1 bro"];
     const screenshotFolder = "screenshots"; // Folder name where screenshots are stored
-    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png"]; // Image names in the folder
-    const replyMessages = ["ohhh", "nice bro", "wow", "good job", "congrats!"];
+    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png" , "proof6.png" , "proof8.png" , "proof9.png" , "proof10.png" ]; // Image names in the folder
+    const replyMessages = ["sahi hai yaar", "vahi toh mai soch rha hu", "I don't know how but that guys are wining huge amount by using that latest hack, ", "yaar itna win kia aapne", "yessssssssss"];
 
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -172,6 +201,18 @@
                 chatBody.appendChild(replyElement);
                 chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
             }, 2000);
+        }
+    }
+
+    function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        
+        const toggleText = document.querySelector('.dark-mode-toggle');
+        if (body.classList.contains('dark-mode')) {
+            toggleText.textContent = "Dark Mode: On";
+        } else {
+            toggleText.textContent = "Dark Mode: Off";
         }
     }
 
