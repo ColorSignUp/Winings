@@ -6,151 +6,148 @@
     <title>Winning Proofs Chat</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
         .chat-container {
             width: 100%;
             max-width: 500px;
-            margin: auto;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 5px solid #ffcc00;
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         .chat-header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
+            background-color: #ffcc00;
+            color: #ff4500;
+            padding: 20px;
             text-align: center;
-            font-size: 20px;
+            font-size: 24px;
+            border-bottom: 5px solid #ff4500;
             position: relative;
         }
-        .dark-mode-toggle {
-            position: absolute;
-            right: 10px;
-            top: 15px;
-            cursor: pointer;
-            color: white;
-            font-size: 14px;
-        }
         .chat-body {
-            padding: 10px;
-            height: calc(100vh - 200px);
+            padding: 15px;
+            height: 300px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+            background-color: #e7f3ff;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .chat-message {
             border-radius: 10px;
-            background-color: #e6e6e6;
+            background-color: #ffeb3b;
             padding: 10px;
             max-width: 90%;
             word-wrap: break-word;
-            margin-left: 0;
-            text-align: left;
+            margin: 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .chat-message:hover {
+            transform: scale(1.05);
         }
         .chat-message img {
-            width: 100px;
+            width: 100%;
             height: auto;
             border-radius: 5px;
-            max-width: 100px;
-        }
-        .chat-message span {
-            display: block;
-            font-size: 12px;
+            max-width: 120px; /* Adjusted size for better visibility */
             margin-top: 5px;
-            color: #555;
         }
         .manual-chat {
             display: flex;
             gap: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
+            padding: 15px;
+            background-color: #f1f1f1;
             position: fixed;
             bottom: 0;
             width: 100%;
             max-width: 500px;
             box-sizing: border-box;
+            border-top: 5px solid #ffcc00;
         }
         .manual-chat input[type="text"] {
             flex: 1;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 2px solid #ffcc00;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .manual-chat input[type="text"]:focus {
+            border-color: #ff4500;
         }
         .manual-chat button {
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #ff4500;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
-        .manual-chat input[type="file"] {
-            display: none;
+        .manual-chat button:hover {
+            background-color: #ff6347;
         }
         .upload-label {
             padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #ffcc00;
+            color: #ff4500;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
-        .dark-mode {
-            background-color: #2f2f2f;
-        }
-        .dark-mode .chat-message {
-            background-color: #444;
-            color: white;
-        }
-        .dark-mode .chat-header {
-            background-color: #333;
-        }
-        .dark-mode .upload-label,
-        .dark-mode button {
-            background-color: #333;
-        }
-        .dark-mode-toggle.dark-on {
-            color: yellow;
+        .upload-label:hover {
+            background-color: #ffeb3b;
         }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">Winning Proofs Chat 
-        <span class="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode: Off</span>
+    <div class="chat-header">
+        Winning Proofs Chat
     </div>
     <div class="chat-body" id="chatBody">
         <!-- Random feedback will be displayed here -->
     </div>
     <div class="manual-chat">
-        <input type="text" id="userInput" placeholder="Enter your message...">
-        <input type="file" id="imageInput" accept="image/*">
-        <label for="imageInput" class="upload-label">Upload Image</label>
-        <button onclick="sendManualMessage()">Send</button>
+        <input type="text" id="userInput" placeholder="Type your message...">
+        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+        <label for="imageInput" class="upload-label">📸 Upload Image</label>
+        <button onclick="sendManualMessage()">✉️ Send</button>
     </div>
 </div>
 
 <script>
     const names = ["Deepak Bhai", "Mohan Bhai", "Rohan", "Shaam", "Piyush Bro", "Sumit Bhai", "Raju Bhai", "Olivia"];
-    const messages = ["Yes, I won!", "thankyou bhai 🥺", "phir se win yaar, thankyou", "hack working hai guys", "Yessss, hack is working! wow", "Bhai socha nahi tha, itna earn krlunga 🥹, thankyou yaar , full support bro , thankyou EarningScripter1 bro"];
+    const messages = ["Yes, I won!", "Thank you, bro! 🥳", "Winning again, thank you!", "This hack is working, guys!", "Wow, I can't believe I won!"];
     const screenshotFolder = "screenshots"; // Folder name where screenshots are stored
-    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png" , "proof6.png" , "proof8.png" , "proof9.png" , "proof10.png" ]; // Image names in the folder
-    const replyMessages = ["sahi hai yaar", "vahi toh mai soch rha hu", "I don't know how but that guys are wining huge amount by using that latest hack, ", "yaar itna win kia aapne", "yessssssssss"];
+    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"]; // Image names in the folder
+    const replyMessages = ["Awesome!", "That's amazing!", "Keep it up!", "You're doing great!", "Fantastic win!"];
 
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -201,18 +198,6 @@
                 chatBody.appendChild(replyElement);
                 chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
             }, 2000);
-        }
-    }
-
-    function toggleDarkMode() {
-        const body = document.body;
-        body.classList.toggle('dark-mode');
-        
-        const toggleText = document.querySelector('.dark-mode-toggle');
-        if (body.classList.contains('dark-mode')) {
-            toggleText.textContent = "Dark Mode: On";
-        } else {
-            toggleText.textContent = "Dark Mode: Off";
         }
     }
 
