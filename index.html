@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winning Proofs Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+        }
+        .chat-body {
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .chat-message {
+            border-radius: 10px;
+            background-color: #e6e6e6;
+            padding: 10px;
+            max-width: 300px;
+        }
+        .chat-message img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .chat-message span {
+            display: block;
+            font-size: 12px;
+            margin-top: 5px;
+            color: #555;
+        }
+        .manual-chat {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .manual-chat input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .manual-chat button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">Winning Proofs Chat</div>
+    <div class="chat-body" id="chatBody">
+        <!-- Random feedback will be displayed here -->
+    </div>
+    <div class="manual-chat">
+        <input type="text" id="userInput" placeholder="Enter your message...">
+        <button onclick="sendManualMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    const names = ["John", "Alice", "Michael", "Emma", "Chris", "Sophia", "Daniel", "Olivia"];
+    const messages = ["Yes, I won!", "Got my payout!", "Feeling lucky!", "Another win!", "Just received!", "Amazing win!"];
+    const screenshotFolder = "screenshots"; // Folder name where screenshots are stored
+    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png"]; // Image names in the folder
+    const replyMessages = ["ohhh", "nice bro", "wow", "good job", "congrats!"];
+
+    function getRandomElement(array) {
+        return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function addRandomMessage() {
+        const name = getRandomElement(names);
+        const message = getRandomElement(messages);
+        const screenshot = getRandomElement(screenshots);
+
+        const chatBody = document.getElementById('chatBody');
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message');
+        messageElement.innerHTML = `<b>${name}</b>:<br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot"><span>${message}</span>`;
+
+        chatBody.appendChild(messageElement);
+        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+    }
+
+    function sendManualMessage() {
+        const userInput = document.getElementById('userInput').value;
+        if (userInput) {
+            const chatBody = document.getElementById('chatBody');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('chat-message');
+            messageElement.innerHTML = `<b>You</b>:<br><span>${userInput}</span>`;
+
+            chatBody.appendChild(messageElement);
+            document.getElementById('userInput').value = ''; // Clear input field
+            chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+
+            // Reply with random response after 2 seconds
+            setTimeout(function() {
+                const reply = getRandomElement(replyMessages);
+                const replyElement = document.createElement('div');
+                replyElement.classList.add('chat-message');
+                replyElement.innerHTML = `<b>${getRandomElement(names)}</b>:<br><span>${reply}</span>`;
+                
+                chatBody.appendChild(replyElement);
+                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+            }, 2000);
+        }
+    }
+
+    // Add random messages at intervals
+    setInterval(addRandomMessage, 5000); // Show a new random message every 5 seconds
+</script>
+
+</body>
+</html>
