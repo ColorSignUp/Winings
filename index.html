@@ -14,7 +14,6 @@
             flex-direction: column;
             justify-content: space-between;
             height: 100vh;
-            transition: background-color 0.3s ease;
         }
         .chat-container {
             width: 100%;
@@ -32,19 +31,10 @@
             padding: 15px;
             text-align: center;
             font-size: 20px;
-            position: relative;
-        }
-        .dark-mode-toggle {
-            position: absolute;
-            right: 10px;
-            top: 15px;
-            cursor: pointer;
-            color: white;
-            font-size: 14px;
         }
         .chat-body {
             padding: 10px;
-            height: calc(100vh - 200px);
+            height: 350px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -54,16 +44,12 @@
             border-radius: 10px;
             background-color: #e6e6e6;
             padding: 10px;
-            max-width: 90%;
-            word-wrap: break-word;
-            margin-left: 0;
-            text-align: left;
+            max-width: 300px;
         }
         .chat-message img {
-            width: 100px;
+            width: 100%;
             height: auto;
             border-radius: 5px;
-            max-width: 100px;
         }
         .chat-message span {
             display: block;
@@ -73,21 +59,16 @@
         }
         .manual-chat {
             display: flex;
+            flex-direction: column;
             gap: 10px;
             padding: 10px;
             background-color: #f9f9f9;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 500px;
-            box-sizing: border-box;
         }
-        .manual-chat input[type="text"] {
+        .manual-chat input {
             flex: 1;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 14px;
         }
         .manual-chat button {
             padding: 10px;
@@ -96,61 +77,54 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
         }
-        .manual-chat input[type="file"] {
+        .preview {
             display: none;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
         }
-        .upload-label {
-            padding: 10px;
-            background-color: #4CAF50;
+        .preview img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .cancel-button {
+            background-color: #ff4757;
             color: white;
+            border: none;
+            padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
-        }
-        .dark-mode {
-            background-color: #2f2f2f;
-        }
-        .dark-mode .chat-message {
-            background-color: #444;
-            color: white;
-        }
-        .dark-mode .chat-header {
-            background-color: #333;
-        }
-        .dark-mode .upload-label,
-        .dark-mode button {
-            background-color: #333;
-        }
-        .dark-mode-toggle.dark-on {
-            color: yellow;
         }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">Winning Proofs Chat 
-        <span class="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode: Off</span>
-    </div>
+    <div class="chat-header">Winning Proofs Chat</div>
     <div class="chat-body" id="chatBody">
         <!-- Random feedback will be displayed here -->
     </div>
     <div class="manual-chat">
         <input type="text" id="userInput" placeholder="Enter your message...">
-        <input type="file" id="imageInput" accept="image/*">
-        <label for="imageInput" class="upload-label">Upload Image</label>
+        <input type="file" id="screenshotInput" accept="image/*" onchange="previewScreenshot()">
+        <div class="preview" id="previewSection">
+            <img id="previewImage" src="" alt="Preview">
+            <button class="cancel-button" onclick="cancelAttachment()">Cancel Attachment</button>
+        </div>
         <button onclick="sendManualMessage()">Send</button>
     </div>
 </div>
 
 <script>
-    const names = ["Deepak Bhai", "Mohan Bhai", "Rohan", "Shaam", "Piyush Bro", "Sumit Bhai", "Raju Bhai", "Olivia"];
-    const messages = ["Yes, I won!", "thankyou bhai 🥺", "phir se win yaar, thankyou", "hack working hai guys", "Yessss, hack is working! wow", "Bhai socha nahi tha, itna earn krlunga 🥹, thankyou yaar , full support bro , thankyou EarningScripter1 bro"];
-    const screenshotFolder = "screenshots"; // Folder name where screenshots are stored
-    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png" , "proof6.png" , "proof8.png" , "proof9.png" , "proof10.png" ]; // Image names in the folder
-    const replyMessages = ["sahi hai yaar", "vahi toh mai soch rha hu", "I don't know how but that guys are wining huge amount by using that latest hack, ", "yaar itna win kia aapne", "yessssssssss"];
+    const names = ["John", "Alice", "Michael", "Emma", "Chris", "Sophia", "Daniel", "Olivia"];
+    const messages = ["Yes, I won!", "Got my payout!", "Feeling lucky!", "Another win!", "Just received!", "Amazing win!"];
+    const screenshots = [
+        "https://via.placeholder.com/150x100?text=Proof1",
+        "https://via.placeholder.com/150x100?text=Proof2",
+        "https://via.placeholder.com/150x100?text=Proof3",
+        "https://via.placeholder.com/150x100?text=Proof4"
+    ];
 
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -164,7 +138,7 @@
         const chatBody = document.getElementById('chatBody');
         const messageElement = document.createElement('div');
         messageElement.classList.add('chat-message');
-        messageElement.innerHTML = `<b>${name}</b>:<br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot"><span>${message}</span>`;
+        messageElement.innerHTML = `<b>${name}</b>:<br><img src="${screenshot}" alt="Screenshot"><span>${message}</span>`;
 
         chatBody.appendChild(messageElement);
         chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
@@ -172,48 +146,40 @@
 
     function sendManualMessage() {
         const userInput = document.getElementById('userInput').value;
-        const imageInput = document.getElementById('imageInput').files[0];
+        const previewImage = document.getElementById('previewImage').src;
 
-        if (userInput || imageInput) {
+        if (userInput || previewImage) {
             const chatBody = document.getElementById('chatBody');
             const messageElement = document.createElement('div');
             messageElement.classList.add('chat-message');
+            messageElement.innerHTML = `<b>You</b>:<br>${userInput ? `<span>${userInput}</span>` : ''}${previewImage ? `<br><img src="${previewImage}" alt="User Screenshot">` : ''}`;
 
-            let messageContent = `<b>You</b>:<br><span>${userInput}</span>`;
-            if (imageInput) {
-                const imageURL = URL.createObjectURL(imageInput);
-                messageContent += `<br><img src="${imageURL}" alt="Uploaded Image">`;
-            }
-
-            messageElement.innerHTML = messageContent;
             chatBody.appendChild(messageElement);
             document.getElementById('userInput').value = ''; // Clear input field
-            document.getElementById('imageInput').value = ''; // Clear file input
+            document.getElementById('previewSection').style.display = 'none'; // Hide preview section
             chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
-
-            // Reply with random response after 2 seconds
-            setTimeout(function () {
-                const reply = getRandomElement(replyMessages);
-                const replyElement = document.createElement('div');
-                replyElement.classList.add('chat-message');
-                replyElement.innerHTML = `<b>${getRandomElement(names)}</b>:<br><span>${reply}</span>`;
-
-                chatBody.appendChild(replyElement);
-                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
-            }, 2000);
         }
     }
 
-    function toggleDarkMode() {
-        const body = document.body;
-        body.classList.toggle('dark-mode');
-        
-        const toggleText = document.querySelector('.dark-mode-toggle');
-        if (body.classList.contains('dark-mode')) {
-            toggleText.textContent = "Dark Mode: On";
-        } else {
-            toggleText.textContent = "Dark Mode: Off";
+    function previewScreenshot() {
+        const file = document.getElementById('screenshotInput').files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            const previewImage = document.getElementById('previewImage');
+            previewImage.src = reader.result;
+            document.getElementById('previewSection').style.display = 'flex'; // Show preview section
         }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function cancelAttachment() {
+        document.getElementById('previewImage').src = ''; // Clear preview image
+        document.getElementById('previewSection').style.display = 'none'; // Hide preview section
+        document.getElementById('screenshotInput').value = ''; // Reset file input
     }
 
     // Add random messages at intervals
