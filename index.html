@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group Chat</title>
+    <title>Compact Chat</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,43 +13,28 @@
         }
         .chat-container {
             width: 100%;
-            max-width: 500px;
+            max-width: 350px; /* Smaller screen size */
             margin: 0 auto;
             border: 1px solid #ccc;
             height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-        .chat-header {
-            background-color: #075e54;
-            color: #fff;
-            padding: 10px;
-            text-align: left;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .chat-header img {
-            border-radius: 50%;
-            margin-right: 10px;
+            background-color: #fafafa;
         }
         .chat-body {
             flex: 1;
-            padding: 10px;
-            background-color: #fafafa;
+            padding: 5px; /* Reduced padding for smaller look */
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 5px; /* Smaller gap between messages */
         }
         .chat-message {
-            max-width: 70%;
-            padding: 8px;
+            max-width: 85%; /* Slightly wider for readability */
+            padding: 5px; /* Smaller padding */
             border-radius: 8px;
             word-wrap: break-word;
-            font-size: 14px;
+            font-size: 12px; /* Smaller font for compact feel */
         }
         .chat-message.sent {
             background-color: #dcf8c6;
@@ -60,27 +45,27 @@
             align-self: flex-start;
         }
         .chat-message img {
-            max-width: 120px;
+            max-width: 80px; /* Smaller image size */
             height: auto;
             border-radius: 5px;
             margin-top: 5px;
         }
         .manual-chat {
             display: flex;
-            padding: 10px;
+            padding: 8px;
             background-color: #fff;
             border-top: 1px solid #ccc;
-            gap: 10px;
+            gap: 5px; /* Smaller gap for a compact look */
         }
         .manual-chat input[type="text"] {
             flex: 1;
-            padding: 8px;
+            padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 12px;
         }
         .manual-chat button {
-            padding: 8px;
+            padding: 5px;
             background-color: #075e54;
             color: #fff;
             border: none;
@@ -92,7 +77,7 @@
             background-color: #064e44;
         }
         .manual-chat label {
-            padding: 8px;
+            padding: 5px;
             background-color: #128c7e;
             color: #fff;
             border-radius: 5px;
@@ -102,32 +87,11 @@
         .manual-chat label:hover {
             background-color: #0d7b6c;
         }
-        .online-members {
-            font-size: 12px;
-            color: white;
-            display: flex;
-            gap: 5px;
-        }
-        .online-members span {
-            display: inline-block;
-            padding: 5px 8px;
-            background-color: #25D366;
-            border-radius: 12px;
-        }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <div class="chat-header">
-        <div>
-            <img src="group_icon.png" alt="Group Icon" width="30" height="30">
-            Group Chat
-        </div>
-        <div class="online-members" id="onlineMembers">
-            <!-- Online members will be dynamically added here -->
-        </div>
-    </div>
     <div class="chat-body" id="chatBody">
         <!-- Messages will appear here -->
     </div>
@@ -142,11 +106,8 @@
 <script>
     const names = ["Deepak Bhai", "Mohan Bhai", "Rohan", "Shaam", "Piyush Bro", "Sumit Bhai", "Raju Bhai", "Olivia"];
     const messages = ["Yes, I won!", "Thank you, bro! 🥳", "Winning again, thank you!", "This hack is working, guys!", "Wow, I can't believe I won!"];
-    const replyMessages = ["Awesome!", "That's amazing!", "Keep it up!", "You're doing great!", "Fantastic win!"];
-    const screenshotFolder = "screenshots";
     const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"];
-
-    const activeUsers = ["Raju Bhai", "Mohan Bhai", "Piyush Bro", "Olivia"];
+    const screenshotFolder = "screenshots";
 
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -160,7 +121,7 @@
         const chatBody = document.getElementById('chatBody');
         const messageElement = document.createElement('div');
         messageElement.classList.add('chat-message', 'received');
-        messageElement.innerHTML = `<b>${name}</b><br>${message}<br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot">`;
+        messageElement.innerHTML = `<b>${name}</b><br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot"><br>${name}`;
 
         chatBody.appendChild(messageElement);
         chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
@@ -175,11 +136,12 @@
             const messageElement = document.createElement('div');
             messageElement.classList.add('chat-message', 'sent');
 
-            let messageContent = `<b>You</b><br>${userInput}`;
+            let messageContent = `<b>You</b>`;
             if (imageInput) {
                 const imageURL = URL.createObjectURL(imageInput);
                 messageContent += `<br><img src="${imageURL}" alt="Uploaded Image">`;
             }
+            messageContent += `<br>You`; // Your own name at the bottom
 
             messageElement.innerHTML = messageContent;
             chatBody.appendChild(messageElement);
@@ -189,10 +151,10 @@
 
             // Simulate random reply after 2 seconds
             setTimeout(function () {
-                const reply = getRandomElement(replyMessages);
+                const reply = getRandomElement(messages);
                 const replyElement = document.createElement('div');
                 replyElement.classList.add('chat-message', 'received');
-                replyElement.innerHTML = `<b>${getRandomElement(names)}</b><br>${reply}`;
+                replyElement.innerHTML = `<b>${getRandomElement(names)}</b><br>${reply}<br>${getRandomElement(names)}`;
 
                 chatBody.appendChild(replyElement);
                 chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
@@ -200,21 +162,8 @@
         }
     }
 
-    function updateOnlineMembers() {
-        const onlineMembersDiv = document.getElementById('onlineMembers');
-        onlineMembersDiv.innerHTML = '';
-        activeUsers.forEach(user => {
-            const userElement = document.createElement('span');
-            userElement.textContent = user;
-            onlineMembersDiv.appendChild(userElement);
-        });
-    }
-
-    // Update online members on load
-    updateOnlineMembers();
-
     // Add random messages every 5 seconds
-    setInterval(addRandomMessage, 5000); 
+    setInterval(addRandomMessage, 5000);
 </script>
 
 </body>
