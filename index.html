@@ -13,7 +13,7 @@
         }
         .chat-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
             border: 1px solid #ccc;
             height: 100vh;
@@ -23,12 +23,13 @@
         .chat-header {
             background-color: #075e54;
             color: #fff;
-            padding: 15px;
+            padding: 10px;
             text-align: left;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
         .chat-header img {
             border-radius: 50%;
@@ -44,11 +45,11 @@
             gap: 10px;
         }
         .chat-message {
-            max-width: 80%;
-            padding: 10px;
+            max-width: 70%;
+            padding: 8px;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             word-wrap: break-word;
+            font-size: 14px;
         }
         .chat-message.sent {
             background-color: #dcf8c6;
@@ -59,7 +60,7 @@
             align-self: flex-start;
         }
         .chat-message img {
-            max-width: 150px;
+            max-width: 120px;
             height: auto;
             border-radius: 5px;
             margin-top: 5px;
@@ -73,33 +74,45 @@
         }
         .manual-chat input[type="text"] {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 12px;
         }
         .manual-chat button {
-            padding: 10px;
+            padding: 8px;
             background-color: #075e54;
             color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
         }
         .manual-chat button:hover {
             background-color: #064e44;
         }
         .manual-chat label {
-            padding: 10px;
+            padding: 8px;
             background-color: #128c7e;
             color: #fff;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
         }
         .manual-chat label:hover {
             background-color: #0d7b6c;
+        }
+        .online-members {
+            font-size: 12px;
+            color: white;
+            display: flex;
+            gap: 5px;
+        }
+        .online-members span {
+            display: inline-block;
+            padding: 5px 8px;
+            background-color: #25D366;
+            border-radius: 12px;
         }
     </style>
 </head>
@@ -107,8 +120,13 @@
 
 <div class="chat-container">
     <div class="chat-header">
-        <img src="group_icon.png" alt="Group Icon" width="40" height="40">
-        Group Chat
+        <div>
+            <img src="group_icon.png" alt="Group Icon" width="30" height="30">
+            Group Chat
+        </div>
+        <div class="online-members" id="onlineMembers">
+            <!-- Online members will be dynamically added here -->
+        </div>
     </div>
     <div class="chat-body" id="chatBody">
         <!-- Messages will appear here -->
@@ -127,6 +145,8 @@
     const replyMessages = ["Awesome!", "That's amazing!", "Keep it up!", "You're doing great!", "Fantastic win!"];
     const screenshotFolder = "screenshots";
     const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"];
+
+    const activeUsers = ["Raju Bhai", "Mohan Bhai", "Piyush Bro", "Olivia"];
 
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -180,7 +200,21 @@
         }
     }
 
-    setInterval(addRandomMessage, 10000); // Random message every 10 seconds
+    function updateOnlineMembers() {
+        const onlineMembersDiv = document.getElementById('onlineMembers');
+        onlineMembersDiv.innerHTML = '';
+        activeUsers.forEach(user => {
+            const userElement = document.createElement('span');
+            userElement.textContent = user;
+            onlineMembersDiv.appendChild(userElement);
+        });
+    }
+
+    // Update online members on load
+    updateOnlineMembers();
+
+    // Add random messages every 5 seconds
+    setInterval(addRandomMessage, 5000); 
 </script>
 
 </body>
