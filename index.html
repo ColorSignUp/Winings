@@ -3,72 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Winning Proofs Chat</title>
+    <title>Group Chat</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff;
+            background-color: #e5ddd5;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
         }
         .chat-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 600px;
+            margin: 0 auto;
             border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .chat-header {
-            background-color: #007bff;
-            color: #ffffff;
+            background-color: #075e54;
+            color: #fff;
             padding: 15px;
-            text-align: center;
+            text-align: left;
             font-size: 18px;
-            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .chat-header img {
+            border-radius: 50%;
+            margin-right: 10px;
         }
         .chat-body {
+            flex: 1;
             padding: 10px;
-            height: 400px;
+            background-color: #fafafa;
             overflow-y: auto;
-            background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
         .chat-message {
-            border-radius: 8px;
-            background-color: #f1f1f1;
-            padding: 10px;
             max-width: 80%;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             word-wrap: break-word;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            margin: 5px 0;
+        }
+        .chat-message.sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+        }
+        .chat-message.received {
+            background-color: #fff;
+            align-self: flex-start;
         }
         .chat-message img {
-            width: 100%;
+            max-width: 150px;
             height: auto;
             border-radius: 5px;
-            max-width: 100px; /* Screenshot size for mobile */
             margin-top: 5px;
         }
         .manual-chat {
             display: flex;
-            gap: 10px;
             padding: 10px;
-            background-color: #f0f0f0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
+            background-color: #fff;
             border-top: 1px solid #ccc;
+            gap: 10px;
         }
         .manual-chat input[type="text"] {
             flex: 1;
@@ -76,30 +77,29 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
-            outline: none;
         }
         .manual-chat button {
             padding: 10px;
-            background-color: #007bff;
-            color: white;
+            background-color: #075e54;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
         }
         .manual-chat button:hover {
-            background-color: #0056b3;
+            background-color: #064e44;
         }
-        .upload-label {
+        .manual-chat label {
             padding: 10px;
-            background-color: #28a745;
-            color: #ffffff;
+            background-color: #128c7e;
+            color: #fff;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
         }
-        .upload-label:hover {
-            background-color: #218838;
+        .manual-chat label:hover {
+            background-color: #0d7b6c;
         }
     </style>
 </head>
@@ -107,15 +107,16 @@
 
 <div class="chat-container">
     <div class="chat-header">
-        Winning Proofs Chat
+        <img src="group_icon.png" alt="Group Icon" width="40" height="40">
+        Group Chat
     </div>
     <div class="chat-body" id="chatBody">
-        <!-- Random feedback will be displayed here -->
+        <!-- Messages will appear here -->
     </div>
     <div class="manual-chat">
-        <input type="text" id="userInput" placeholder="Type your message...">
+        <input type="text" id="userInput" placeholder="Type a message">
         <input type="file" id="imageInput" accept="image/*" style="display: none;">
-        <label for="imageInput" class="upload-label">📸 Upload</label>
+        <label for="imageInput">📸</label>
         <button onclick="sendManualMessage()">Send</button>
     </div>
 </div>
@@ -123,9 +124,9 @@
 <script>
     const names = ["Deepak Bhai", "Mohan Bhai", "Rohan", "Shaam", "Piyush Bro", "Sumit Bhai", "Raju Bhai", "Olivia"];
     const messages = ["Yes, I won!", "Thank you, bro! 🥳", "Winning again, thank you!", "This hack is working, guys!", "Wow, I can't believe I won!"];
-    const screenshotFolder = "screenshots"; // Folder name where screenshots are stored
-    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"]; // Image names in the folder
     const replyMessages = ["Awesome!", "That's amazing!", "Keep it up!", "You're doing great!", "Fantastic win!"];
+    const screenshotFolder = "screenshots";
+    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"];
 
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
@@ -138,8 +139,8 @@
 
         const chatBody = document.getElementById('chatBody');
         const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message');
-        messageElement.innerHTML = `<b>${name}</b>:<br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot"><span>${message}</span>`;
+        messageElement.classList.add('chat-message', 'received');
+        messageElement.innerHTML = `<b>${name}</b><br>${message}<br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot">`;
 
         chatBody.appendChild(messageElement);
         chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
@@ -152,9 +153,9 @@
         if (userInput || imageInput) {
             const chatBody = document.getElementById('chatBody');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('chat-message');
+            messageElement.classList.add('chat-message', 'sent');
 
-            let messageContent = `<b>You</b>:<br><span>${userInput}</span>`;
+            let messageContent = `<b>You</b><br>${userInput}`;
             if (imageInput) {
                 const imageURL = URL.createObjectURL(imageInput);
                 messageContent += `<br><img src="${imageURL}" alt="Uploaded Image">`;
@@ -166,12 +167,12 @@
             document.getElementById('imageInput').value = ''; // Clear file input
             chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
 
-            // Reply with random response after 2 seconds
+            // Simulate random reply after 2 seconds
             setTimeout(function () {
                 const reply = getRandomElement(replyMessages);
                 const replyElement = document.createElement('div');
-                replyElement.classList.add('chat-message');
-                replyElement.innerHTML = `<b>${getRandomElement(names)}</b>:<br><span>${reply}</span>`;
+                replyElement.classList.add('chat-message', 'received');
+                replyElement.innerHTML = `<b>${getRandomElement(names)}</b><br>${reply}`;
 
                 chatBody.appendChild(replyElement);
                 chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
@@ -179,8 +180,7 @@
         }
     }
 
-    // Add random messages at intervals
-    setInterval(addRandomMessage, 5000); // Show a new random message every 5 seconds
+    setInterval(addRandomMessage, 10000); // Random message every 10 seconds
 </script>
 
 </body>
