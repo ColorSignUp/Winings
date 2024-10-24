@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #f7f7f7;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,82 +19,82 @@
         .chat-container {
             width: 100%;
             max-width: 360px;
-            border-radius: 10px;
+            border-radius: 12px;
             background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
         .chat-header {
-            background-color: #4caf50;
+            background-color: #2d87f0;
             color: white;
-            padding: 10px;
+            padding: 15px;
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
         }
 
         .chat-body {
-            padding: 10px;
-            height: 300px;
+            padding: 15px;
+            height: 320px;
             overflow-y: auto;
-            background-color: #f9f9f9;
+            background-color: #f0f4f8;
         }
 
         .chat-message {
-            background-color: #e1f5fe;
+            background-color: #e7f3ff;
             margin-bottom: 10px;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px;
+            border-radius: 10px;
             max-width: 80%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-size: 14px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            font-size: 15px;
         }
 
         .chat-message img {
             display: block;
-            width: 80px; /* Smaller images */
+            width: 100px; /* Smaller images */
             height: auto;
             margin-top: 5px;
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
         .manual-chat {
             display: flex;
-            padding: 10px;
+            padding: 12px;
             background-color: #ffffff;
             border-top: 1px solid #ccc;
         }
 
         .manual-chat input[type="text"] {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 5px;
             font-size: 14px;
             margin-right: 8px;
         }
 
         .manual-chat button {
-            background-color: #4caf50;
+            background-color: #2d87f0;
             color: white;
-            padding: 8px 12px;
+            padding: 10px;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
         }
 
         .manual-chat button:hover {
-            background-color: #45a049;
+            background-color: #2673c9;
         }
 
         .upload-label {
             padding: 6px;
-            background-color: #4caf50;
+            background-color: #2d87f0;
             color: white;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             margin-left: 8px;
             font-size: 14px;
@@ -119,9 +119,12 @@
 </div>
 
 <script>
-    const names = ["Ravi", "Mohan", "Rohan", "Shaam", "Piyush", "Sumit", "Raju", "Olivia"];
+    const names = ["Ravi", "Mohan", "Rohan", "Shaam", "Piyush", "Sumit", "Raju", "Olivia", "Karan", "Sonia"];
     const messages = ["Yes, I won!", "Thanks for the help!", "Amazing result!", "This really works!", "I'm winning again!"];
-    const screenshots = ["proof1.png", "proof2.png", "proof3.png"]; // Example screenshots
+    const screenshots = [
+        "proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png",
+        "proof6.png", "proof7.png", "proof8.png", "proof9.png", "proof10.png"
+    ];
 
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
