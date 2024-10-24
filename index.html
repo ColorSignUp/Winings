@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Winning Proofs Chat</title>
+    <title>Dark Hacker Chat</title>
     <style>
+        /* General body styling */
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #f9f9f9;
+            font-family: 'Courier New', monospace;
+            background-color: #0a0a0a;
+            color: #00ff9d;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,113 +17,126 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            transition: background-color 0.3s;
         }
+
+        /* Chat container and box styles */
         .chat-container {
             width: 100%;
             max-width: 500px;
-            border: 5px solid #ffcc00;
-            border-radius: 15px;
-            background-color: #fff;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            border: 3px solid #00ff9d;
+            border-radius: 10px;
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 10px rgba(0, 255, 157, 0.2);
             overflow: hidden;
-            animation: fadeIn 0.5s ease-in-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+
+        /* Header with glowing text effect */
         .chat-header {
-            background-color: #ffcc00;
-            color: #ff4500;
+            background-color: #0a0a0a;
             padding: 20px;
             text-align: center;
             font-size: 24px;
-            border-bottom: 5px solid #ff4500;
-            position: relative;
+            color: #00ff9d;
+            text-shadow: 0px 0px 8px #00ff9d;
+            border-bottom: 3px solid #00ff9d;
         }
+
+        /* Main chat area styling */
         .chat-body {
-            padding: 15px;
+            padding: 20px;
             height: 300px;
             overflow-y: auto;
+            background-color: #0d0d0d;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            background-color: #e7f3ff;
-            animation: slideIn 0.5s ease-in-out;
+            gap: 15px;
         }
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+
+        /* Chat message bubble styling */
         .chat-message {
-            border-radius: 10px;
-            background-color: #ffeb3b;
+            background-color: rgba(0, 255, 157, 0.2);
             padding: 10px;
-            max-width: 90%;
-            word-wrap: break-word;
-            margin: 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-        .chat-message:hover {
-            transform: scale(1.05);
-        }
-        .chat-message img {
-            width: 100%;
-            height: auto;
+            border-left: 4px solid #00ff9d;
             border-radius: 5px;
-            max-width: 120px; /* Adjusted size for better visibility */
-            margin-top: 5px;
+            color: #fff;
+            font-size: 14px;
+            position: relative;
+            animation: glow 0.5s ease-in-out;
         }
+
+        /* Glow effect for new chat messages */
+        @keyframes glow {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Glowing border and neon text style for buttons and inputs */
         .manual-chat {
             display: flex;
             gap: 10px;
-            padding: 15px;
-            background-color: #f1f1f1;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 500px;
+            padding: 20px;
+            background-color: #0d0d0d;
+            border-top: 3px solid #00ff9d;
             box-sizing: border-box;
-            border-top: 5px solid #ffcc00;
         }
+
+        /* Input text box style */
         .manual-chat input[type="text"] {
             flex: 1;
             padding: 10px;
-            border: 2px solid #ffcc00;
+            border: 2px solid #00ff9d;
+            background-color: #1a1a1a;
+            color: #00ff9d;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 14px;
             outline: none;
-            transition: border-color 0.3s;
         }
-        .manual-chat input[type="text"]:focus {
-            border-color: #ff4500;
+
+        /* File input for uploading images */
+        .manual-chat input[type="file"] {
+            display: none;
         }
-        .manual-chat button {
-            padding: 10px;
-            background-color: #ff4500;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        .manual-chat button:hover {
-            background-color: #ff6347;
-        }
+
+        /* Label for the image upload button */
         .upload-label {
             padding: 10px;
-            background-color: #ffcc00;
-            color: #ff4500;
+            background-color: #00ff9d;
+            color: #0a0a0a;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        /* Hover effect for upload button */
+        .upload-label:hover {
+            background-color: #00ffb7;
+        }
+
+        /* Send button style with neon border */
+        .manual-chat button {
+            padding: 10px;
+            background-color: transparent;
+            border: 2px solid #00ff9d;
+            color: #00ff9d;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
             transition: background-color 0.3s;
         }
-        .upload-label:hover {
-            background-color: #ffeb3b;
+
+        /* Hover effect for send button */
+        .manual-chat button:hover {
+            background-color: #00ff9d;
+            color: #0a0a0a;
+        }
+
+        /* Image inside message styling */
+        .chat-message img {
+            width: 100px;
+            border-radius: 5px;
+            margin-top: 5px;
+            border: 2px solid #00ff9d;
         }
     </style>
 </head>
@@ -129,30 +144,32 @@
 
 <div class="chat-container">
     <div class="chat-header">
-        Winning Proofs Chat
+        Dark Hacker Chat
     </div>
     <div class="chat-body" id="chatBody">
-        <!-- Random feedback will be displayed here -->
+        <!-- Chat messages will display here -->
     </div>
     <div class="manual-chat">
-        <input type="text" id="userInput" placeholder="Type your message...">
-        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-        <label for="imageInput" class="upload-label">📸 Upload Image</label>
-        <button onclick="sendManualMessage()">✉️ Send</button>
+        <input type="text" id="userInput" placeholder="Enter your message...">
+        <input type="file" id="imageInput" accept="image/*">
+        <label for="imageInput" class="upload-label">Upload</label>
+        <button onclick="sendManualMessage()">Send</button>
     </div>
 </div>
 
 <script>
-    const names = ["Deepak Bhai", "Mohan Bhai", "Rohan", "Shaam", "Piyush Bro", "Sumit Bhai", "Raju Bhai", "Olivia"];
-    const messages = ["Yes, I won!", "Thank you, bro! 🥳", "Winning again, thank you!", "This hack is working, guys!", "Wow, I can't believe I won!"];
-    const screenshotFolder = "screenshots"; // Folder name where screenshots are stored
-    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"]; // Image names in the folder
-    const replyMessages = ["Awesome!", "That's amazing!", "Keep it up!", "You're doing great!", "Fantastic win!"];
+    const names = ["Neo", "Trinity", "Morpheus", "Cipher", "Smith", "Oracle"];
+    const messages = ["Hacked the system!", "Data breach successful.", "Access granted.", "We're in!", "Encryption cracked!", "Operation complete."];
+    const screenshotFolder = "screenshots"; // Folder name for screenshots
+    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"]; // Screenshot names
+    const replyMessages = ["System override.", "Security bypassed.", "Level up!", "Connection stable.", "Firewall breached."];
 
+    // Get a random element from an array
     function getRandomElement(array) {
         return array[Math.floor(Math.random() * array.length)];
     }
 
+    // Add random message to chat
     function addRandomMessage() {
         const name = getRandomElement(names);
         const message = getRandomElement(messages);
@@ -164,9 +181,10 @@
         messageElement.innerHTML = `<b>${name}</b>:<br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot"><span>${message}</span>`;
 
         chatBody.appendChild(messageElement);
-        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to bottom
     }
 
+    // Send manual message
     function sendManualMessage() {
         const userInput = document.getElementById('userInput').value;
         const imageInput = document.getElementById('imageInput').files[0];
@@ -186,9 +204,9 @@
             chatBody.appendChild(messageElement);
             document.getElementById('userInput').value = ''; // Clear input field
             document.getElementById('imageInput').value = ''; // Clear file input
-            chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+            chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to bottom
 
-            // Reply with random response after 2 seconds
+            // Random reply after 2 seconds
             setTimeout(function () {
                 const reply = getRandomElement(replyMessages);
                 const replyElement = document.createElement('div');
@@ -196,7 +214,7 @@
                 replyElement.innerHTML = `<b>${getRandomElement(names)}</b>:<br><span>${reply}</span>`;
 
                 chatBody.appendChild(replyElement);
-                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to bottom
             }, 2000);
         }
     }
