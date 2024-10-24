@@ -3,168 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compact Chat</title>
+    <title>Feedback Chat</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #e5ddd5;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .chat-container {
-            width: 100%;
-            max-width: 350px; /* Smaller screen size */
-            margin: 0 auto;
+
+        #chat-box {
+            width: 90%;
+            max-width: 600px;
+            background-color: #ffffff;
             border: 1px solid #ccc;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: #fafafa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-        .chat-body {
-            flex: 1;
-            padding: 5px; /* Reduced padding for smaller look */
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 5px; /* Smaller gap between messages */
+
+        .message {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background-color: #f5f5f5;
         }
-        .chat-message {
-            max-width: 85%; /* Slightly wider for readability */
-            padding: 5px; /* Smaller padding */
-            border-radius: 8px;
-            word-wrap: break-word;
-            font-size: 12px; /* Smaller font for compact feel */
-        }
-        .chat-message.sent {
-            background-color: #dcf8c6;
-            align-self: flex-end;
-        }
-        .chat-message.received {
-            background-color: #fff;
-            align-self: flex-start;
-        }
-        .chat-message img {
-            max-width: 80px; /* Smaller image size */
-            height: auto;
+
+        .message img {
+            width: 100%;
+            max-width: 200px;
             border-radius: 5px;
             margin-top: 5px;
         }
+
+        .name {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .feedback {
+            margin-top: 5px;
+        }
+
         .manual-chat {
-            display: flex;
-            padding: 8px;
-            background-color: #fff;
-            border-top: 1px solid #ccc;
-            gap: 5px; /* Smaller gap for a compact look */
+            margin-top: 20px;
         }
-        .manual-chat input[type="text"] {
-            flex: 1;
-            padding: 5px;
-            border: 1px solid #ccc;
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-right: 5px;
             border-radius: 5px;
-            font-size: 12px;
+            border: 1px solid #ccc;
         }
-        .manual-chat button {
-            padding: 5px;
-            background-color: #075e54;
-            color: #fff;
+
+        button {
+            padding: 10px;
             border: none;
             border-radius: 5px;
+            background-color: #007bff;
+            color: white;
             cursor: pointer;
-            font-size: 12px;
         }
-        .manual-chat button:hover {
-            background-color: #064e44;
-        }
-        .manual-chat label {
-            padding: 5px;
-            background-color: #128c7e;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-        .manual-chat label:hover {
-            background-color: #0d7b6c;
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-
-<div class="chat-container">
-    <div class="chat-body" id="chatBody">
-        <!-- Messages will appear here -->
+    <div id="chat-box">
+        <!-- Chat feedbacks will be displayed here -->
     </div>
+
     <div class="manual-chat">
-        <input type="text" id="userInput" placeholder="Type a message">
-        <input type="file" id="imageInput" accept="image/*" style="display: none;">
-        <label for="imageInput">📸</label>
+        <input type="text" id="manual-name" placeholder="Enter your name">
+        <input type="text" id="manual-message" placeholder="Enter your message">
         <button onclick="sendManualMessage()">Send</button>
     </div>
-</div>
 
-<script>
-    const names = ["Deepak Bhai", "Mohan Bhai", "Rohan", "Shaam", "Piyush Bro", "Sumit Bhai", "Raju Bhai", "Olivia"];
-    const messages = ["Yes, I won!", "Thank you, bro! 🥳", "Winning again, thank you!", "This hack is working, guys!", "Wow, I can't believe I won!"];
-    const screenshots = ["proof1.png", "proof2.png", "proof3.png", "proof4.png", "proof5.png"];
-    const screenshotFolder = "screenshots";
+    <script>
+        // Random Indian names
+        const names = ['Rohit', 'Priya', 'Vikram', 'Anjali', 'Suresh', 'Divya', 'Arjun', 'Sneha', 'Rahul', 'Meera'];
 
-    function getRandomElement(array) {
-        return array[Math.floor(Math.random() * array.length)];
-    }
+        // Random feedback messages
+        const messages = ['Yes, I won!', 'Just got my winning!', 'Thank you for the great opportunity!', 'I won again, so happy!', 'Super excited, I just won!', 'Won big this time!', 'Another win for me!', 'Feeling lucky today!', 'Got my winnings!', 'Big win, thank you!'];
 
-    function addRandomMessage() {
-        const name = getRandomElement(names);
-        const message = getRandomElement(messages);
-        const screenshot = getRandomElement(screenshots);
+        // Screenshots (You can replace these with actual URLs or stored images)
+        const screenshots = ['proof1.jpg', 'proof2.jpg', 'proof3.jpg', 'proof4.jpg', 'proof5.jpg', 'proof6.jpg', 'proof7.jpg', 'proof8.jpg', 'proof9.jpg', 'proof10.jpg'];
 
-        const chatBody = document.getElementById('chatBody');
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', 'received');
-        messageElement.innerHTML = `<b>${name}</b><br><img src="${screenshotFolder}/${screenshot}" alt="Screenshot"><br>${name}`;
+        const chatBox = document.getElementById('chat-box');
 
-        chatBody.appendChild(messageElement);
-        chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
-    }
+        // Function to display a random message
+        function displayRandomMessage() {
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            const randomScreenshot = screenshots[Math.floor(Math.random() * screenshots.length)];
 
-    function sendManualMessage() {
-        const userInput = document.getElementById('userInput').value;
-        const imageInput = document.getElementById('imageInput').files[0];
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.innerHTML = `<span class="name">${randomName}:</span><br>
+                <img src="${randomScreenshot}" alt="Proof"><br>
+                <span class="feedback">${randomMessage}</span>`;
 
-        if (userInput || imageInput) {
-            const chatBody = document.getElementById('chatBody');
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('chat-message', 'sent');
+            chatBox.appendChild(messageDiv);
 
-            let messageContent = `<b>You</b>`;
-            if (imageInput) {
-                const imageURL = URL.createObjectURL(imageInput);
-                messageContent += `<br><img src="${imageURL}" alt="Uploaded Image">`;
-            }
-            messageContent += `<br>You`; // Your own name at the bottom
-
-            messageElement.innerHTML = messageContent;
-            chatBody.appendChild(messageElement);
-            document.getElementById('userInput').value = ''; // Clear input field
-            document.getElementById('imageInput').value = ''; // Clear file input
-            chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
-
-            // Simulate random reply after 2 seconds
-            setTimeout(function () {
-                const reply = getRandomElement(messages);
-                const replyElement = document.createElement('div');
-                replyElement.classList.add('chat-message', 'received');
-                replyElement.innerHTML = `<b>${getRandomElement(names)}</b><br>${reply}<br>${getRandomElement(names)}`;
-
-                chatBody.appendChild(replyElement);
-                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
-            }, 2000);
+            // Scroll to the bottom of the chat box
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
-    }
 
-    // Add random messages every 5 seconds
-    setInterval(addRandomMessage, 5000);
-</script>
+        // Display a random message every few seconds
+        setInterval(displayRandomMessage, 5000);
 
+        // Manual message sending function
+        function sendManualMessage() {
+            const name = document.getElementById('manual-name').value || 'Anonymous';
+            const message = document.getElementById('manual-message').value || 'No message';
+
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.innerHTML = `<span class="name">${name}:</span><br>
+                <span class="feedback">${message}</span>`;
+
+            chatBox.appendChild(messageDiv);
+
+            // Scroll to the bottom of the chat box
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Clear input fields
+            document.getElementById('manual-name').value = '';
+            document.getElementById('manual-message').value = '';
+        }
+    </script>
 </body>
 </html>
